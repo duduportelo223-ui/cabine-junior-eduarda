@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#241c24">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Cabine de fotos · Junior & Eduarda">
+  <title>Junior ∞ Eduarda</title>
+  <link rel="icon" href="assets/farol.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=WindSong&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=13">
+</head>
+<body>
+  <!-- fundo vivo: luzes quentes desfocadas -->
+  <div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <!-- ABERTURA -->
+  <section class="splash is-active" id="splash">
+    <div class="splash__inner">
+      <div class="lh-wrap" id="lh" aria-hidden="true">
+        <div class="beam"><i></i><i></i></div>
+        <div class="lamp-glow"></div>
+        <div class="lens-glint"></div>
+      </div>
+
+      <p class="splash__kicker">Cabine de fotos</p>
+      <h1 class="splash__names">
+        <span data-text="groom">Junior</span><i>∞</i><span data-text="bride">Eduarda</span>
+      </h1>
+      <p class="splash__date" data-text="date">22 · 09 · 2026</p>
+
+      <button class="glass glass--btn splash__cta" id="btnStart" type="button">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.8l1.4-2h6.6l1.4 2h1.8A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="12.8" r="3.6"/></svg>
+        Abrir câmera
+      </button>
+    </div>
+  </section>
+
+  <!-- CÂMERA -->
+  <section class="cam" id="cam" aria-label="Câmera">
+    <video class="cam__ambient" id="ambient" playsinline muted autoplay aria-hidden="true"></video>
+
+    <header class="cam__top">
+      <span class="glass glass--pill cam__brand"><b data-text="mono1">J</b><i>∞</i><b data-text="mono2">E</b></span>
+      <div class="cam__top-actions">
+        <button class="glass glass--pill" id="btnTimer" type="button" aria-label="Temporizador">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>
+          <span id="timerLabel">3s</span>
+        </button>
+        <button class="glass glass--round" id="btnGallery" type="button" aria-label="Galeria">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 15.5l5-4.3 4 3.3 3-2.6 4.5 3.6" stroke-linecap="round"/><circle cx="8.3" cy="9" r="1.6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="cam__stage" id="stage">
+      <div class="card" id="card">
+        <video id="video" playsinline muted autoplay></video>
+        <canvas id="overlay" aria-hidden="true"></canvas>
+        <canvas id="recCanvas" aria-hidden="true" hidden></canvas>
+        <div class="card__count" id="countdown" aria-live="assertive"></div>
+        <div class="card__flash" id="flash"></div>
+        <div class="card__rec" id="recBadge" hidden><i></i><span id="recTime">0:00</span></div>
+        <div class="card__state" id="camLoading"><span class="spinner"></span></div>
+        <div class="card__state card__state--msg" id="camMsg" hidden>
+          <p class="msg__title" id="camMsgTitle"></p>
+          <p class="msg__text" id="camMsgText"></p>
+          <button class="glass glass--btn glass--light" id="btnRetry" type="button">Tentar de novo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cam__bottom">
+      <div class="modeSwitch glass glass--pill" role="tablist" aria-label="Modo">
+        <button type="button" class="is-active" data-mode="photo">Foto</button>
+        <button type="button" data-mode="video">Vídeo</button>
+      </div>
+
+      <div class="modes" id="modes" role="tablist" aria-label="Molduras"><div class="modes__track" id="modesTrack"></div></div>
+      <div class="cam__controls">
+        <button class="thumb" id="btnLast" type="button" aria-label="Última foto" hidden><img id="lastImg" alt=""></button>
+        <div class="shutter-wrap" id="shutterWrap">
+          <div class="shutter-ring" id="shutterRing" aria-hidden="true"></div>
+          <button class="shutter" id="btnShutter" type="button" aria-label="Tirar foto" disabled><span></span></button>
+        </div>
+        <button class="glass glass--round glass--lg" id="btnFlip" type="button" aria-label="Trocar câmera" hidden>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 9.5a8 8 0 0 1 14-3.7M19.5 14.5a8 8 0 0 1-14 3.7"/><path d="M18.8 2.6v3.6h-3.6M5.2 21.4v-3.6h3.6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADO -->
+  <section class="result" id="result" aria-label="Sua foto" hidden>
+    <div class="result__photo">
+      <img id="resultImg" alt="Sua foto com moldura">
+      <video id="resultVideo" playsinline loop muted controls hidden></video>
+    </div>
+    <p class="result__hint" id="resultHint"></p>
+    <div class="result__actions">
+      <button class="glass glass--btn" id="btnRetake" type="button">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.6M4 4v4.6h4.6"/></svg>
+        Nova foto
+      </button>
+      <button class="glass glass--btn glass--light" id="btnSave" type="button">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5M5 19.5h14"/></svg>
+        Salvar
+      </button>
+    </div>
+    <button class="link" id="btnResultGallery" type="button">Ver galeria</button>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="gallery" id="gallery" aria-label="Galeria" hidden>
+    <header class="bar">
+      <button class="glass glass--round" id="btnGalleryClose" type="button" aria-label="Fechar galeria">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <span class="bar__title">Galeria</span>
+      <span class="bar__spacer" aria-hidden="true"></span>
+    </header>
+    <div class="gallery__body">
+      <p class="gallery__note">Fotos e vídeos ficam guardados só neste aparelho.</p>
+      <div class="gallery__grid" id="galleryGrid"></div>
+      <div class="gallery__empty" id="galleryEmpty" hidden>
+        <p>Suas fotos e vídeos vão aparecer aqui.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUALIZADOR -->
+  <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Visualizar">
+    <button class="glass glass--round viewer__close" id="btnViewerClose" type="button" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="viewer__media" id="viewerMedia"></div>
+    <div class="viewer__actions">
+      <button class="glass glass--btn" id="btnViewerDelete" type="button">Apagar</button>
+      <button class="glass glass--btn glass--light" id="btnViewerSave" type="button">Salvar</button>
+    </div>
+  </div>
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js?v=13"></script>
+  <script src="js/filters.js?v=13"></script>
+  <script src="js/frames.js?v=13"></script>
+  <script src="js/gallery.js?v=13"></script>
+  <script src="js/app.js?v=13"></script>
+</body>
+</html>
